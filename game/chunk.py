@@ -23,20 +23,23 @@ class Chunk:
         
     def generate_blocks(self):
         for i in range(self.chunk_size*self.chunk_size):
+            # TODO: I think this method will be faster -> figure out how to cut down on the amount of vertices?
             # block = Entity(
             #     model=Mesh(),
-            #     texture='white_cube'
+            #     color=self.color
             # )
             
-            # x = floor(i/self.chunk_size)
-            # z = floor(i%self.chunk_size)
+            # x = floor((i/self.chunk_size) + self.offset_x)
+            # z = floor((i%self.chunk_size) + self.offset_z)
             # y = self.noise.get_y(x, z)
             
             # block.model.vertices.extend([Vec3(x,y,z) + v for v in 
             #                     self.block.vertices])
             
-            # self.blocks.append(block)
-            block = Entity(model='cube', color=self.color)
+            # block.parent = self.parent
+            
+            
+            block = Entity(model='block.obj', color=self.color)
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))

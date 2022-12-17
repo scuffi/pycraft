@@ -1,1 +1,1 @@
-from .game import start
+from .game import start, update

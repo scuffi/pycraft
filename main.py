@@ -1,3 +1,6 @@
-from game import start
+import game
 
-start()
+def update():
+    game.update()
+
+game.start()
