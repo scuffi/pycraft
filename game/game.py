@@ -12,9 +12,12 @@ terrain = Entity(model=None, collider=None)
 
 noise = Noise(seed = 100, amp=5, freq=24, octaves=2)
 
-chunk = Chunk(noise=noise, chunk_size=16, parent=terrain)
+for x in range(0, 3):
+    for z in range(0, 3):
+        print("Generating chunk: ", x, z)
+        chunk = Chunk(noise=noise, chunk_size=8, parent=terrain, chunk_offset=(x, z))
 
-chunk.generate_blocks()
+        chunk.generate_blocks()
 # noise =PerlinNoise(octaves=2, seed=100)
 # freq = 24
 # amp = 5
