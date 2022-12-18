@@ -27,8 +27,9 @@ class BoundingBox:
         self._x2 = int(floor(x2))
         self._z2 = int(floor(z2))
     
-    def get_chunks(self):
+    def get_product(self):
         range_x = range(self._x1, self._x2 + 1)
         range_z = range(self._z1, self._z2 + 1)
         
         return list(itertools.product(range_x, range_z))
+    

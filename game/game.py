@@ -3,80 +3,53 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from perlin_noise import PerlinNoise
 from numpy import floor
 
-from game.noise import Noise
+from game.world import World
 from game.chunk import Chunk
 from game.player import Player
 from game.util import BoundingBox
+from game.config import WorldSettings
 
 app = Ursina()
 
-chunk_size = 8
-
-terrain = Entity(model=None, collider=None)
-
-noise = Noise(seed = 100, amp=5, freq=24, octaves=2)
-
-chunks = {}
-
-for x in range(-2, 2):
-    for z in range(-2, 2):
-        print("Generating chunk: ", x, z)
-        offset = (x, z)
-        chunk = Chunk(noise=noise, chunk_size=chunk_size, parent=terrain, chunk_offset=offset)
-
-        chunk.generate_blocks()
-        
-        chunks[offset] = chunk
-    
-terrain.combine()
-terrain.collider = 'mesh'
-terrain.texture = 'white_cube'
-
+world = World(seed=100)
 player = Player()
 
-
 @player.event.listen("chunk_changed")
-def position_change(**kwargs):
+def chunk_change(**kwargs):
     chunk = kwargs['chunk']
-    # last_chunk = kwargs['last_chunk']
-    
-    # difference_x = last_chunk[0] - chunk[0]
-    # difference_z = last_chunk[1] - chunk[1]
-    # print(f"Chunk changed to {chunk[0] - difference_x}, {chunk[1] - difference_z}")
-
-    # offset = (chunk[0] - difference_x, chunk[1] - difference_z)
-    # if offset not in chunks:
-    #     # Only generate if chunk isn't already generated
-    #     chunk = Chunk(noise=noise, chunk_size=chunk_size, parent=terrain, chunk_offset=offset)
-
-    #     chunk.generate_blocks()
-        
-    #     terrain.combine()
-    #     terrain.collider = 'mesh'
-    # print("Chunk already exists")
     box = BoundingBox.from_centre_chunk(chunk, radius=2)
     
     # Get all chunks inside of this bounding box
-    product = box.get_chunks()
+    product = box.get_product()
     
     # existing_chunks = list(set(product) & set(chunks.keys()))
-    non_existing_chunks = list(set(product) - set(chunks.keys()))
+    non_existing_chunks = list(set(product) - set(world.chunks.keys()))
+    old_chunks = list(set(world.chunks.keys()) - set(product))
     
-    print(f"{len(product) - len(non_existing_chunks)} chunks are not rendered in this box.")
+    for old_chunk in old_chunks:
+        # TODO: Not working, idk why (can't delete an entity??)
+        world._remove_chunk(old_chunk)
     
-    for offset in non_existing_chunks:
-        print(f"Rendering new chunk: {offset}")
-        chunk = Chunk(noise=noise, chunk_size=chunk_size, parent=terrain, chunk_offset=offset)
+    for new_chunk in non_existing_chunks:
+        world._generate_chunk(new_chunk)
+        
+    world._build_terrain()
+    
+shellRadius = 3
+shells = [Entity(model='block.obj', collider='box', highlight_color=color.lime) for i in range(shellRadius * shellRadius)]
 
-        chunk.generate_blocks()
-        
-        chunks[offset] = chunk
-        
-    terrain.combine()
-    terrain.collider = 'mesh'
+@player.event.listen("position_changed")
+def position_change(**kwargs):
+    # Get users position
+    position = kwargs['position']
+    # Generate a collision box around 5x5? around the user, using normal chunk generation
+    for i in range(len(shells)):
+        x = shells[i].x = floor((i/shellRadius) + player.position.x)
+        z = shells[i].z = floor((i%shellRadius) + player.position.z)
+        shells[i].y = world.noise.get_y(x, z)
 
 def update():
-    player._update(chunk_size)
-
+    player._update(WorldSettings.CHUNK_SIZE)
+    
 def start():
     app.run()

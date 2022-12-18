@@ -1,4 +1,5 @@
 import inspect
+from multiprocessing import Pool
 import asyncio
 
 class EventHandler:
