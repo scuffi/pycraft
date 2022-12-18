@@ -1,3 +1,6 @@
+import inspect
+import asyncio
+
 class EventHandler:
     def __init__(self) -> None:
         self.callbacks = {}
@@ -25,4 +28,7 @@ class EventHandler:
     def trigger(self, event: str, **kwargs):
         if event in self.callbacks:
             for callback in self.callbacks[event]:
-                callback(**kwargs)
+                if inspect.iscoroutinefunction(callback):
+                    asyncio.get_event_loop().create_task(callback(**kwargs))
+                else:
+                    callback(**kwargs)

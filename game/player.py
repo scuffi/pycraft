@@ -30,5 +30,6 @@ class Player:
             
             chunk = (chunk_x, chunk_z) = (floor(self.position.x / chunk_size), floor(self.position.z / chunk_size))
             if chunk != self.last_chunk:
-                self._chunk_changed(chunk=chunk)
+                self._chunk_changed(chunk=chunk, last_chunk=self.last_chunk if self.last_chunk is not None else (0, 0))
                 self.last_chunk = chunk
+        

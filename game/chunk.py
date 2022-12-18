@@ -44,3 +44,9 @@ class Chunk:
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))
             block.parent = self.parent
+            
+            self.blocks.append(block)
+            
+    def delete(self):
+        for block in self.blocks:
+            destroy(block)
