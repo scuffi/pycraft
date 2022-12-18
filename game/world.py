@@ -12,6 +12,8 @@ class World:
         
         self.chunks: list[Chunk] = {}
         
+        self.blocks: list[Entity] = {}
+        
     def pregen_world(self, radius: int):
         """
         Note: Radius must be > 0
@@ -26,10 +28,10 @@ class World:
     def _build_terrain(self):
         self.terrain.combine()
         # self.terrain.collider = 'mesh'
-        self.terrain.texture = 'white_cube'
+        self.terrain.texture = 'grass'
         
     def _generate_chunk(self, offset: tuple[int, int]):
-        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, parent=self.terrain, chunk_offset=offset)
+        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, parent=self.terrain, chunk_offset=offset, world=self)
 
         chunk.generate_blocks()
         
