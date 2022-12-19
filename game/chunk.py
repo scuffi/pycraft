@@ -8,7 +8,7 @@ from game.noise import Noise
 from game.block import Block
 
 class Chunk:
-    def __init__(self, noise: Noise, chunk_size, parent, chunk_offset: tuple[int, int], world) -> None:
+    def __init__(self, noise: Noise, chunk_size, parent, chunk_offset: tuple[int, int], world, player) -> None:
         self.noise = noise
         self.chunk_size = chunk_size
         
@@ -21,13 +21,13 @@ class Chunk:
         self.offset_z = (chunk_offset[1] * chunk_size)
         
         self.world = world
+        self.player = player
         
         
         self.color = color.rgba(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
         
     def generate_blocks(self):
         for i in range(self.chunk_size*self.chunk_size):
-            # TODO: I think this method will be faster -> figure out how to cut down on the amount of vertices?
             # block = Entity(
             #     model=Mesh(),
             #     color=self.color,
@@ -46,7 +46,7 @@ class Chunk:
             
             
             
-            block = Block(model='block.obj', color=self.color, parent=scene, texture='grass',)
+            block = Block(model='cube', color=self.color, parent=scene, texture='grass', player=self.player)
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))

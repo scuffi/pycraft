@@ -30,8 +30,8 @@ class World:
         # self.terrain.collider = 'mesh'
         self.terrain.texture = 'grass'
         
-    def _generate_chunk(self, offset: tuple[int, int]):
-        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, parent=self.terrain, chunk_offset=offset, world=self)
+    def _generate_chunk(self, offset: tuple[int, int], player):
+        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, parent=self.terrain, chunk_offset=offset, world=self, player=player)
 
         chunk.generate_blocks()
         
