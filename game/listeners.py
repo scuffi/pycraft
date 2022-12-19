@@ -1,41 +1,39 @@
-from game.util import BoundingBox
-from game.config import WorldSettings
+from .player import Player
+from .world import World
 
-from multiprocessing import Process
-
-def register_listeners(player, world):
+def register_listeners(player: Player, world: World):
+    """
+    Register any listeners to start listening to events
+    
+    Args:
+      player (Player): The player entity
+      world (World): The world object
+    """
     
     @player.event.listen("chunk_changed", background=False)
     def chunk_change(args: dict):
+        """
+        When a chunk is changed, generate the terrain for that chunk
+        
+        Args:
+          args (dict): dict -> Any parameters
+        """
         chunk_location = args['chunk']
         
         print("Generating chunk...")
         
-        # Process(target=generate_chunks, args=(chunk_location, world)).start()
+        # TODO: Eventually switch to this, ursina doesn't support multiprocessing atm
+        # Process(target=world.generate_terrain, args=(chunk_location)).start()
+        world.generate_terrain(chunk_location)
+    
         
-        box = BoundingBox.from_centre_chunk(chunk_location, radius=WorldSettings.RENDER_DISTANCE)
-        
-        # Get all chunks inside of this bounding box
-        product = box.get_product()
-        
-        # Iterate over all the chunks that SHOULD exist
-        for chunk_offset in product:
-            # Check if chunk is currently rendered
-            if chunk_offset not in world.chunks:
-                
-                # If it's not, we know it should be, so render it
-                world._generate_chunk(chunk_offset)
-                
-        # Iterate over all the currently rendered chunks
-        for chunk_offset in world.chunks.copy():
-            # If the chunk is NOT in the product, it's not in our render distance
-            if chunk_offset not in product:
-                # ...so we can remove the chunk as it's too far away to care about
-                world._remove_chunk(chunk_offset)
-        
-    # Entity(model='cube', collider='box')
-
     @player.event.listen("position_changed")
     def position_change(args: dict):
+        """
+        It generates the players interactive area.
+        
+        Args:
+          args (dict): dict -> Any parameters
+        """
         # Generate the players bounding area
         player.generate_bounding_area(world)
