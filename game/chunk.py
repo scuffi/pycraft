@@ -9,14 +9,13 @@ from game.block import Block
 from game.config import DebugSettings
 
 class Chunk:
-    def __init__(self, noise: Noise, chunk_size, parent, chunk_offset: tuple[int, int], world, player) -> None:
+    def __init__(self, noise: Noise, chunk_size, chunk_offset: tuple[int, int], world, player) -> None:
         self.noise = noise
         self.chunk_size = chunk_size
         
         self.block = load_model('block.obj', use_deepcopy=True)
         
         self.blocks: list[Entity] = []
-        self.parent = parent
         # self.chunk = Entity(model=None, collider=None)
         self.offset_x = (chunk_offset[0] * chunk_size)
         self.offset_z = (chunk_offset[1] * chunk_size)
@@ -58,7 +57,3 @@ class Chunk:
                 block.color = self.color
             
             self.blocks.append(block)
-            
-    def delete(self):
-        for block in self.blocks:
-            destroy(block)

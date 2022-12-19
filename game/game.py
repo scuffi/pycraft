@@ -26,8 +26,8 @@ def chunk_change(args: dict):
     non_existing_chunks = list(set(product) - set(world.chunks.keys()))
     old_chunks = list(set(world.chunks.keys()) - set(product))
     
+    # TODO: Fix as this does not work
     for old_chunk in old_chunks:
-        # TODO: Not working, idk why (can't delete an entity??)
         world._remove_chunk(old_chunk)
     
     for new_chunk in non_existing_chunks:
