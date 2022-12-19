@@ -1,1 +1,1 @@
-from .game import start, update
+from .listeners import register_listeners

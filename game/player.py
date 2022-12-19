@@ -4,7 +4,7 @@ from numpy import floor
 
 from game.event import EventHandler
 from game.util import BoundingBox3D
-from game.config import DebugSettings
+from game.config import DebugSettings, Settings
 
 class Player:
     def __init__(self) -> None:
@@ -30,7 +30,7 @@ class Player:
         
         
     def generate_bounding_area(self, world):
-        box = BoundingBox3D.from_centre(self.position, 4)
+        box = BoundingBox3D.from_centre(self.position, Settings.REACH)
     
         product = box.get_product()
         
@@ -72,8 +72,3 @@ class Player:
             if chunk != self.last_chunk:
                 self._chunk_changed(chunk=chunk, last_chunk=self.last_chunk if self.last_chunk is not None else (0, 0))
                 self.last_chunk = chunk
-               
-        # hit_info = raycast(self.controller.world_position + Vec3(0,1,0), self.controller.forward, 30, ignore=(self,))
-        # # print(hit_info)
-        # if hit_info:
-        #     hit_info.entity.color = color.blue
