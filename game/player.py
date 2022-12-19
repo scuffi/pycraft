@@ -12,6 +12,8 @@ class Player:
         self.last_location = None
         self.last_chunk = None
         
+        self.interactive_blocks: list = []
+        
     @property
     def position(self):
         return self.controller.position

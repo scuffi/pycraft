@@ -42,10 +42,25 @@ def position_change(args: dict):
     # Generate a collision box around 5x5? around the user, using normal chunk generation
     box = BoundingBox3D.from_centre(position, 4)
     
-    for block_location in box.get_product():
+    product = box.get_product()
+    
+    for old_block in player.interactive_blocks.copy():
+        # Check if the block isn't still meant to be interactive
+        if old_block not in product:
+            
+            # If it's not in our existing bounding box it means that the block is now too far away from the player to be interactive
+            old_block.collision = False
+            old_block.color = color.black
+            
+            player.interactive_blocks.remove(old_block)
+    
+    for block_location in product:
         if block_location in world.blocks:
-            world.blocks[block_location].collision = True
-            world.blocks[block_location].color = color.white
+            block = world.blocks[block_location]
+            block.collision = True
+            block.color = color.white
+            
+            player.interactive_blocks.append(block)
         
 def update():
     player._update(WorldSettings.CHUNK_SIZE)
