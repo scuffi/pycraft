@@ -26,3 +26,7 @@ class Block(Entity):
         """Destroy the hovered box when mouse leaves."""
         destroy(self.hovered_box)
         self.hovered_box = None
+        
+    def remove(self):
+        self.on_mouse_exit()
+        destroy(self)

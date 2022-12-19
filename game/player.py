@@ -1,4 +1,4 @@
-from ursina import color
+from ursina import color, mouse
 from ursina.prefabs.first_person_controller import FirstPersonController
 from numpy import floor
 
@@ -57,6 +57,24 @@ class Player:
                     block.color = color.red
                 
                 self.interactive_blocks.append(block)
+                
+    def is_interacting(self, key, world: World):
+        """
+        If the left mouse button is pressed, place a block at the position of the mouse cursor. If the right
+        mouse button is pressed, break the block at the position of the mouse cursor
+        
+        Args:
+          key: The key that was pressed.
+          world (World): The world object.
+        """
+        if key == 'left mouse down':
+            hovered_block = mouse.hovered_entity
+            if hovered_block:
+                world.place_block(hovered_block.position + mouse.normal, 'grass')
+        elif key == 'right mouse down':
+            hovered_block = mouse.hovered_entity
+            if hovered_block:
+                world.break_block(hovered_block)
                 
     # ! Private functions
     def _position_changed(self, **kwargs):

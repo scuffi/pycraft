@@ -1,4 +1,4 @@
-from ursina import Entity, destroy
+from ursina import Entity, destroy, scene
 
 from .noise import Noise
 from .config import WorldSettings, NoiseSettings
@@ -94,7 +94,12 @@ class World:
             if chunk_offset not in product:
                 # ...so we can remove the chunk as it's too far away to care about
                 self._remove_chunk(chunk_offset)
-                    
+                
+    def place_block(self, location: tuple, texture: str):
+        block = Block(model='cube', parent=scene, texture=texture, position=location)
+        
+        self.blocks[(block.x,block.y,block.z)] = block
+        
     def break_block(self, block: Block):
         """
         Attempt to destroy a block from the World.
@@ -102,7 +107,7 @@ class World:
         Args:
           block (Block): The block to be destroyed.
         """
-        destroy(block)
+        block.remove()
         
         if block in self.blocks:
             del self.blocks[block]
