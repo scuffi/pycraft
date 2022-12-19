@@ -15,28 +15,35 @@ world = World(seed=100)
 player = Player()
 
 # Pregeneration of world & boxes
-world.pregen_world(WorldSettings.PRE_GENERATION_SIZE)
+world.pregen_world(WorldSettings.RENDER_DISTANCE)
 player.generate_bounding_area(world)
 
 @player.event.listen("chunk_changed", background=False)
 def chunk_change(args: dict):
-    chunk = args['chunk']
+    chunk_location = args['chunk']
     
-    box = BoundingBox.from_centre_chunk(chunk, radius=2)
+    box = BoundingBox.from_centre_chunk(chunk_location, radius=WorldSettings.RENDER_DISTANCE)
     
     # Get all chunks inside of this bounding box
     product = box.get_product()
     
-    non_existing_chunks = list(set(product) - set(world.chunks.keys()))
-    old_chunks = list(set(world.chunks.keys()) - set(product))
+    # Iterate over all the chunks that SHOULD exist
+    for chunk_offset in product:
+        # Check if chunk is currently rendered
+        if chunk_offset not in world.chunks:
+            
+            # If it's not, we know it should be, so render it
+            world._generate_chunk(chunk_offset)
+            
+    # Iterate over all the currently rendered chunks
+    for chunk_offset in world.chunks.copy():
+        # If the chunk is NOT in the product, it's not in our render distance
+        if chunk_offset not in product:
+            # ...so we can remove the chunk as it's too far away to care about
+            world._remove_chunk(chunk_offset)
     
-    # TODO: Fix as this does not work
-    for old_chunk in old_chunks:
-        world._remove_chunk(old_chunk)
-    
-    for new_chunk in non_existing_chunks:
-        world._generate_chunk(new_chunk)
-        
+Entity(model='cube', collider='box')
+
 @player.event.listen("position_changed")
 def position_change(args: dict):
     # Generate the players bounding area

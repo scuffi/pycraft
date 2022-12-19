@@ -1,6 +1,6 @@
 # World settings
 chunk-size: 8
-pregen-size: 2
+render-distance: 3
 
 # General
 reach: 6

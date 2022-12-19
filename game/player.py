@@ -3,7 +3,6 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from numpy import floor
 
 from game.event import EventHandler
-from game.world import World
 from game.util import BoundingBox3D
 from game.config import DebugSettings
 
@@ -30,7 +29,7 @@ class Player:
             print('pressed right shift button')
         
         
-    def generate_bounding_area(self, world: World):
+    def generate_bounding_area(self, world):
         box = BoundingBox3D.from_centre(self.position, 4)
     
         product = box.get_product()

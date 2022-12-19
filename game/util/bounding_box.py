@@ -22,10 +22,10 @@ class BoundingBox:
         return self(x1, z1, x2, z2)
     
     def __init__(self, x1, z1, x2, z2) -> None:
-        self._x1 = int(floor(x1))
-        self._z1 = int(floor(z1))
-        self._x2 = int(floor(x2))
-        self._z2 = int(floor(z2))
+        self._x1 = int(round(x1))
+        self._z1 = int(round(z1))
+        self._x2 = int(round(x2))
+        self._z2 = int(round(z2))
     
     def get_product(self):
         range_x = range(self._x1, self._x2 + 1)

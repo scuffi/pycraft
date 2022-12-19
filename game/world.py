@@ -10,7 +10,8 @@ class World:
     def __init__(self, seed: int) -> None:
         self.noise = Noise(seed=seed, amp=5, freq=24, octaves=2)
         
-        self.chunks: list[Chunk] = {}
+        self.chunks: dict[tuple, Chunk] = {}
+        # self.chunks: list[Chunk] = []
         
         self.blocks: list[Entity] = {}
         
@@ -34,11 +35,11 @@ class World:
         if offset in self.chunks:
             for block in self.chunks[offset].blocks:
                 self.break_block(block)
+                
+            del self.chunks[offset]
                     
     def break_block(self, block: Block):
         destroy(block)
         
         if block in self.blocks:
             del self.blocks[block]
-        else:
-            print("Attempted to delete block that doesn't exist!")

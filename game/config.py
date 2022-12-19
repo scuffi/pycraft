@@ -4,7 +4,7 @@ with open('settings.yml', 'r') as file:
 
 class WorldSettings:
     CHUNK_SIZE = settings_file['chunk-size']
-    PRE_GENERATION_SIZE = settings_file['pregen-size']
+    RENDER_DISTANCE = settings_file['render-distance']
     
 class Settings:
     REACH = settings_file['reach']

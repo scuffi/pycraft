@@ -3,10 +3,12 @@ from ursina.scene import instance as scene
 from numpy import floor
 
 import random
+import math
 
 from game.noise import Noise
 from game.block import Block
-from game.config import DebugSettings
+from game.config import DebugSettings, WorldSettings
+from game.player import Player
 
 class Chunk:
     def __init__(self, noise: Noise, chunk_size, chunk_offset: tuple[int, int], world) -> None:
