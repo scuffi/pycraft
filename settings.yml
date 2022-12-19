@@ -5,6 +5,9 @@ pregen-size: 2
 # General
 reach: 6
 
+# Colour of the block when hovered, where the list is RGBA ordered
+hover-colour: [3, 23, 252, 100]
+
 # Debug settings
 
 # ? Visualise chunk borders

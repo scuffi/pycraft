@@ -8,6 +8,7 @@ class WorldSettings:
     
 class Settings:
     REACH = settings_file['reach']
+    HOVER_COLOUR = settings_file['hover-colour']
     
 class DebugSettings:
     CHUNK_COLOURS = settings_file['chunk-colours']

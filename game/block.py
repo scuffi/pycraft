@@ -11,22 +11,14 @@ class Block(Entity):
         
         self.collider = 'box'
         self.collision = False
-        self.highlight_color = color.lime,
+        
+        self.hovered_box = None
         
     def on_mouse_enter(self):
-        self.color = color.lime
+        # Check if there isn't already a hovered box here
+        if not self.hovered_box:
+            self.hovered_box = Entity(model='cube', collider=None, color=color.rgba(*Settings.HOVER_COLOUR), scale=(1.1,1.1,1.1), position=self.position)
         
     def on_mouse_exit(self):
-        self.color = color.white
-        
-    # def update(self):
-    #     if self.collision:
-    #         self.collision = False
-            # self.color = color.black
-    
-    # def distance(self, x1, y1, z1, x2, y2, z2):
-    #     d = math.sqrt(math.pow(x2 - x1, 2) +
-    #                 math.pow(y2 - y1, 2) +
-    #                 math.pow(z2 - z1, 2)* 1.0)
-        
-    #     return d
+        destroy(self.hovered_box)
+        self.hovered_box = None
