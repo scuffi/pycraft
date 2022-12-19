@@ -5,10 +5,8 @@ from game.config import Settings
 
 class Block(Entity):
     
-    def __init__(self, player, add_to_scene_entities=True, **kwargs):
+    def __init__(self, add_to_scene_entities=True, **kwargs):
         super().__init__(add_to_scene_entities, **kwargs)
-        self.player = player
-        
         self.collider = 'box'
         self.collision = False
         

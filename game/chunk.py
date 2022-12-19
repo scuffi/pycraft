@@ -9,7 +9,7 @@ from game.block import Block
 from game.config import DebugSettings
 
 class Chunk:
-    def __init__(self, noise: Noise, chunk_size, chunk_offset: tuple[int, int], world, player) -> None:
+    def __init__(self, noise: Noise, chunk_size, chunk_offset: tuple[int, int], world) -> None:
         self.noise = noise
         self.chunk_size = chunk_size
         
@@ -21,7 +21,6 @@ class Chunk:
         self.offset_z = (chunk_offset[1] * chunk_size)
         
         self.world = world
-        self.player = player
         
         
         self.color = color.rgba(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
@@ -46,7 +45,7 @@ class Chunk:
             
             
             
-            block = Block(model='cube', parent=scene, texture='grass', player=self.player)
+            block = Block(model='cube', parent=scene, texture='grass')
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))

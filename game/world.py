@@ -23,8 +23,8 @@ class World:
                 offset = (x, z)
                 self._generate_chunk(offset)
                 
-    def _generate_chunk(self, offset: tuple[int, int], player):
-        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, chunk_offset=offset, world=self, player=player)
+    def _generate_chunk(self, offset: tuple[int, int]):
+        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, chunk_offset=offset, world=self)
 
         chunk.generate_blocks()
         

@@ -3,6 +3,9 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from numpy import floor
 
 from game.event import EventHandler
+from game.world import World
+from game.util import BoundingBox3D
+from game.config import DebugSettings
 
 class Player:
     def __init__(self) -> None:
@@ -26,6 +29,34 @@ class Player:
         if key == 'right shift down':
             print('pressed right shift button')
         
+        
+    def generate_bounding_area(self, world: World):
+        box = BoundingBox3D.from_centre(self.position, 4)
+    
+        product = box.get_product()
+        
+        for old_block in self.interactive_blocks.copy():
+            # Check if the block isn't still meant to be interactive
+            if old_block not in product:
+                
+                # If it's not in our existing bounding box it means that the block is now too far away from the player to be interactive
+                old_block.collision = False
+                
+                if DebugSettings.TRAIL:
+                    old_block.color = color.black
+                
+                self.interactive_blocks.remove(old_block)
+        
+        for block_location in product:
+            if block_location in world.blocks:
+                block = world.blocks[block_location]
+                block.collision = True
+                
+                if DebugSettings.BOUNDING_BOX:
+                    block.color = color.red
+                
+                self.interactive_blocks.append(block)
+                
     # ! Private functions
     def _position_changed(self, **kwargs):
         self.event.trigger("position_changed", **kwargs)
