@@ -1,6 +1,12 @@
 # World settings
 chunk-size: 8
 render-distance: 3
+seed: 1337
+
+# Noise settings
+amplitude: 5
+frequency: 24
+octaves: 2
 
 # General
 reach: 6

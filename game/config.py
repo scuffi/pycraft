@@ -9,6 +9,12 @@ class WorldSettings:
     CHUNK_SIZE = settings_file['chunk-size']
     RENDER_DISTANCE = settings_file['render-distance']
     
+class NoiseSettings:
+    SEED = settings_file['seed']
+    AMPLITUDE = settings_file['amplitude']
+    FREQUENCY = settings_file['frequency']
+    OCTAVES = settings_file['octaves']
+    
 class Settings:
     """Settings relate to general-purpose features that don't need a specific category"""
     REACH = settings_file['reach']

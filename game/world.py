@@ -1,7 +1,7 @@
 from ursina import Entity, destroy
 
 from .noise import Noise
-from .config import WorldSettings
+from .config import WorldSettings, NoiseSettings
 from .chunk import Chunk
 from .block import Block
 from .util import BoundingBox
@@ -17,7 +17,7 @@ class World:
         Args:
           seed (int): int = The seed for the world.
         """
-        self.noise = Noise(seed=seed, amp=5, freq=24, octaves=2)
+        self.noise = Noise(seed=seed, amp=NoiseSettings.AMPLITUDE, freq=NoiseSettings.FREQUENCY, octaves=NoiseSettings.OCTAVES)
         
         self.chunks: dict[tuple, Chunk] = {}
         # self.chunks: list[Chunk] = []

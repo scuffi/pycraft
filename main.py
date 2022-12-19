@@ -5,13 +5,13 @@ if __name__ == "__main__":
     # Need to import everything here as Multiprocessing does NOT like ursina engine
     # ! As of 19/12/2022 -> Multiprocessing is not used because Ursina is ALLERGIC, leave this here as will continue to try and fix
     from ursina import Ursina
-    from game import register_listeners, World, Player, WorldSettings
+    from game import register_listeners, World, Player, WorldSettings, NoiseSettings
     
     # Our game object
     app = Ursina()
     
     # Instantiate a world and a player
-    world = World(seed=2341253425)
+    world = World(seed=NoiseSettings.SEED)
     player = Player()
     
     # Perform some pre-generation
