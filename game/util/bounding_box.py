@@ -61,5 +61,5 @@ class BoundingBox3D:
         range_z = range(self._z1, self._z2 + 1)
         range_y = range(self._y1, self._y2 + 1)
         
-        return list(itertools.product(range_x, range_z, range_y))
+        return list(itertools.product(range_x, range_y, range_z))
     

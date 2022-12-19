@@ -1,4 +1,4 @@
-from ursina import *
+from ursina import Entity, color, load_model, destroy
 from ursina.scene import instance as scene
 from numpy import floor
 
@@ -28,11 +28,11 @@ class Chunk:
         
     def generate_blocks(self):
         for i in range(self.chunk_size*self.chunk_size):
-            # block = Entity(
+            # block = Block(
             #     model=Mesh(),
             #     color=self.color,
-            #     texture='grass',
-            #     parent=scene
+            #     parent=scene,
+            #     player=self.player
             # )
             
             # x = floor((i/self.chunk_size) + self.offset_x)
@@ -42,7 +42,7 @@ class Chunk:
             # block.model.vertices.extend([Vec3(x,y,z) + v for v in 
             #                     self.block.vertices])
             
-            # block.parent = self.parent
+            # block.model.generate()
             
             
             
@@ -50,13 +50,12 @@ class Chunk:
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))
-            # block.parent = self.parent
             
             self.world.blocks[(block.x,block.y,block.z)] = block
+            
             
             self.blocks.append(block)
             
     def delete(self):
         for block in self.blocks:
-            block.parent = None
             destroy(block)

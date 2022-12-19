@@ -1,4 +1,4 @@
-from ursina import *
+from ursina import Entity, destroy
 
 from game.noise import Noise
 from game.config import WorldSettings
@@ -23,13 +23,6 @@ class World:
                 offset = (x, z)
                 self._generate_chunk(offset)
                 
-        self._build_terrain()
-        
-    def _build_terrain(self):
-        self.terrain.combine()
-        # self.terrain.collider = 'mesh'
-        self.terrain.texture = 'grass'
-        
     def _generate_chunk(self, offset: tuple[int, int], player):
         chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, parent=self.terrain, chunk_offset=offset, world=self, player=player)
 
@@ -39,7 +32,6 @@ class World:
         
     def _remove_chunk(self, offset: tuple[int, int]):
         if offset in self.chunks:
-            # self.chunks[offset].delete()
             for block in self.chunks[offset].blocks:
                 if block in self.terrain.children:
                     self.terrain.children.remove(block)
