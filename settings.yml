@@ -1,0 +1,6 @@
+# World settings
+chunk-size: 8
+pregen-size: 2
+
+# General
+reach: 5
