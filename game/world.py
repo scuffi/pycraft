@@ -97,6 +97,7 @@ class World:
                 
     def place_block(self, location: tuple, texture: str):
         block = Block(model='cube', parent=scene, texture=texture, position=location)
+        block.collision = True
         
         self.blocks[(block.x,block.y,block.z)] = block
         
