@@ -6,6 +6,7 @@ import random
 
 from game.noise import Noise
 from game.block import Block
+from game.config import DebugSettings
 
 class Chunk:
     def __init__(self, noise: Noise, chunk_size, parent, chunk_offset: tuple[int, int], world, player) -> None:
@@ -46,13 +47,15 @@ class Chunk:
             
             
             
-            block = Block(model='cube', color=self.color, parent=scene, texture='grass', player=self.player)
+            block = Block(model='cube', parent=scene, texture='grass', player=self.player)
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))
             
             self.world.blocks[(block.x,block.y,block.z)] = block
             
+            if DebugSettings.CHUNK_COLOURS:
+                block.color = self.color
             
             self.blocks.append(block)
             

@@ -1,3 +1,4 @@
+from ursina import raycast, Vec3, color
 from ursina.prefabs.first_person_controller import FirstPersonController
 from numpy import floor
 
@@ -14,10 +15,17 @@ class Player:
         
         self.interactive_blocks: list = []
         
+        # self.controller.input = self.input
+        
     @property
     def position(self):
         return self.controller.position
     
+    # For your code
+    def input(self, key):
+        if key == 'right shift down':
+            print('pressed right shift button')
+        
     # ! Private functions
     def _position_changed(self, **kwargs):
         self.event.trigger("position_changed", **kwargs)
@@ -34,4 +42,8 @@ class Player:
             if chunk != self.last_chunk:
                 self._chunk_changed(chunk=chunk, last_chunk=self.last_chunk if self.last_chunk is not None else (0, 0))
                 self.last_chunk = chunk
-        
+               
+        # hit_info = raycast(self.controller.world_position + Vec3(0,1,0), self.controller.forward, 30, ignore=(self,))
+        # # print(hit_info)
+        # if hit_info:
+        #     hit_info.entity.color = color.blue

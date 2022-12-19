@@ -7,7 +7,7 @@ from game.world import World
 from game.chunk import Chunk
 from game.player import Player
 from game.util import BoundingBox, BoundingBox3D
-from game.config import WorldSettings
+from game.config import WorldSettings, DebugSettings
 
 app = Ursina()
 
@@ -50,7 +50,9 @@ def position_change(args: dict):
             
             # If it's not in our existing bounding box it means that the block is now too far away from the player to be interactive
             old_block.collision = False
-            old_block.color = color.black
+            
+            if DebugSettings.TRAIL:
+                old_block.color = color.black
             
             player.interactive_blocks.remove(old_block)
     
@@ -58,7 +60,9 @@ def position_change(args: dict):
         if block_location in world.blocks:
             block = world.blocks[block_location]
             block.collision = True
-            block.color = color.white
+            
+            if DebugSettings.BOUNDING_BOX:
+                block.color = color.red
             
             player.interactive_blocks.append(block)
         

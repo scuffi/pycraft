@@ -8,3 +8,8 @@ class WorldSettings:
     
 class Settings:
     REACH = settings_file['reach']
+    
+class DebugSettings:
+    CHUNK_COLOURS = settings_file['chunk-colours']
+    TRAIL = settings_file['colour-derendered']
+    BOUNDING_BOX = settings_file['bounding-box']

@@ -3,4 +3,15 @@ chunk-size: 8
 pregen-size: 2
 
 # General
-reach: 5
+reach: 6
+
+# Debug settings
+
+# ? Visualise chunk borders
+chunk-colours: False
+
+# ? Visualise the derendered blocks around the player
+colour-derendered: False
+
+# ? Visualise the interactive blocks around player
+bounding-box: False

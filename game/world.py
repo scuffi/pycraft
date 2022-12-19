@@ -3,6 +3,7 @@ from ursina import Entity, destroy
 from game.noise import Noise
 from game.config import WorldSettings
 from game.chunk import Chunk
+from game.block import Block
 
 class World:
     
@@ -36,3 +37,7 @@ class World:
                 if block in self.terrain.children:
                     self.terrain.children.remove(block)
                     destroy(block)
+                    
+    def break_block(self, block: Block):
+        destroy(block)
+        self.blocks.remove(block)
