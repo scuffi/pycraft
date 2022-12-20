@@ -1,5 +1,4 @@
 import sys
-from multiprocess import Process
 
 if __name__ == "__main__":
     
@@ -36,8 +35,6 @@ if __name__ == "__main__":
                 
     # Register all our listeners so the code will properly execute on events
     register_listeners(player, world)
-    
-    # TODO: Implement multiprocessing as a constant background process, rather than one ran every event
     
     # Finally, run the game.
     app.run()

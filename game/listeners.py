@@ -20,11 +20,7 @@ def register_listeners(player: Player, world: World):
         """
         chunk_location = args['chunk']
         
-        print("Generating chunk...")
-        
-        # TODO: Eventually switch to this, ursina doesn't support multiprocessing atm
-        # Process(target=world.generate_terrain, args=(chunk_location)).start()
-        
+        # Generate the terrain from the new chunk location
         world.generate_terrain(chunk_location)
     
         
