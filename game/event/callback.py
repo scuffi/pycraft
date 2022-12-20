@@ -17,7 +17,7 @@ class Callback:
         Passes any arguments given to the function
         """
         if self.asynchronous:
-            # TODO: Ursina fails with this, grr
+            # ! Ursina fails with this, grr
             p = Process(target=self.function, kwargs=kwargs)
             p.start()
         else:
