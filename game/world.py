@@ -1,6 +1,6 @@
 import sys
 
-from ursina import Entity, destroy, scene, Mesh, Vec3, Vec2, load_model
+from ursina import Entity, scene
 
 from numpy import floor
 
@@ -121,23 +121,6 @@ class World:
         block = Block(model='cube', parent=scene, position=location, block_type=block_type)
         
         block.collision = True
-        
-        # TODO: Possibly a future iteration using a custom block object to extend the vertices for complex textures?
-        # block = Block(
-        #     model=Mesh(),
-        #     parent=scene,
-        #     position=location,
-        #     texture=texture
-        # )
-        
-        # block_model = load_model('block.obj', use_deepcopy=True)
-        
-        # block.model.vertices.extend([Vec3(block.x,block.y,block.z) + v for v in 
-        #                     block_model.vertices])
-        
-        # block.model.uvs.extend([Vec2(0,0) + u for u in block_model.uvs])
-        
-        # block.model.generate()
         
         # Add the block to the world registry, and the chunk registry
         self.blocks[(block.x,block.y,block.z)] = block

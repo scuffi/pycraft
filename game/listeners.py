@@ -24,6 +24,7 @@ def register_listeners(player: Player, world: World):
         
         # TODO: Eventually switch to this, ursina doesn't support multiprocessing atm
         # Process(target=world.generate_terrain, args=(chunk_location)).start()
+        
         world.generate_terrain(chunk_location)
     
         
