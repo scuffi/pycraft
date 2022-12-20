@@ -9,7 +9,7 @@ class Block(Entity):
     
     def __init__(self, block_type: BlockType, add_to_scene_entities=True, **kwargs):
         super().__init__(add_to_scene_entities, **kwargs)
-        self.collider = 'mesh'
+        self.collider = 'box'
         self.collision = False
         
         self.hovered_box = None

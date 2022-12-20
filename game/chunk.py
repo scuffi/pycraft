@@ -35,7 +35,7 @@ class Chunk:
         
         self.color = color.rgba(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
         
-    def generate_blocks(self, default_block: BlockType):
+    def generate_chunk(self, default_block: BlockType):
         """
         It creates a block for each coordinate in the chunk, and adds it to the world.
         """
@@ -67,3 +67,11 @@ class Chunk:
                 block.color = self.color
             
             self.blocks.append(block)
+            
+    def _render_chunk(self):
+        for block in self.blocks:
+            block.enable()
+        
+    def _derender_chunk(self):
+        for block in self.blocks:
+            block.disable()

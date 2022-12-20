@@ -22,8 +22,8 @@ class World:
         """
         self.noise = Noise(seed=seed, amp=NoiseSettings.AMPLITUDE, freq=NoiseSettings.FREQUENCY, octaves=NoiseSettings.OCTAVES)
         
-        self.chunks: dict[tuple, Chunk] = {}
-        # self.chunks: list[Chunk] = []
+        self.enabled_chunks: dict[tuple, Chunk] = {}
+        self.disabled_chunks: dict[tuple, Chunk] = {}
         
         self.blocks: list[Entity] = {}
         
@@ -50,29 +50,40 @@ class World:
         Args:
           offset (tuple[int, int]): tuple[int, int]
         """
-        chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, chunk_offset=offset, world=self)
-        
-        # Check if the default block exists in the registry
-        if WorldSettings.DEFAULT_BLOCK not in self.block_registry:
-            print("Default block was not found in configuration, please amend.")
-            sys.exit(1)
+        if offset not in self.disabled_chunks:
+          chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, chunk_offset=offset, world=self)
+          
+          # Check if the default block exists in the registry
+          if WorldSettings.DEFAULT_BLOCK not in self.block_registry:
+              print("Default block was not found in configuration, please amend.")
+              sys.exit(1)
 
-        chunk.generate_blocks(self.block_registry[WorldSettings.DEFAULT_BLOCK])
+          chunk.generate_chunk(self.block_registry[WorldSettings.DEFAULT_BLOCK])
+        else:
+          chunk = self.disabled_chunks[offset]
+          chunk._render_chunk()
+          del self.disabled_chunks[offset]
         
-        self.chunks[offset] = chunk
+        self.enabled_chunks[offset] = chunk
         
-    def _remove_chunk(self, offset: tuple[int, int]):
+    def _derender_chunk(self, offset: tuple[int, int]):
         """
         It removes a chunk from the world
         
         Args:
           offset (tuple[int, int]): The offset of the chunk to remove.
         """
-        if offset in self.chunks:
-            for block in self.chunks[offset].blocks:
-                self.break_block(block)
+        if offset in self.enabled_chunks:
+            # for block in self.chunks[offset].blocks:
+            #     self.break_block(block)
                 
-            del self.chunks[offset]
+            chunk_object = self.enabled_chunks[offset]
+            chunk_object._derender_chunk()
+            
+            self.disabled_chunks[offset] = chunk_object
+            
+            del self.enabled_chunks[offset]
+            
             
     def generate_terrain(self, current_location):
         """
@@ -93,17 +104,17 @@ class World:
         # Iterate over all the chunks that SHOULD exist
         for chunk_offset in product:
             # Check if chunk is currently rendered
-            if chunk_offset not in self.chunks:
+            if chunk_offset not in self.enabled_chunks:
                 
                 # If it's not, we know it should be, so render it
                 self._generate_chunk(chunk_offset)
                 
         # Iterate over all the currently rendered chunks
-        for chunk_offset in self.chunks.copy():
+        for chunk_offset in self.enabled_chunks.copy():
             # If the chunk is NOT in the product, it's not in our render distance
             if chunk_offset not in product:
                 # ...so we can remove the chunk as it's too far away to care about
-                self._remove_chunk(chunk_offset)
+                self._derender_chunk(chunk_offset)
                 
     def place_block(self, location: tuple, block_type: BlockType):
         block = Block(model='cube', parent=scene, position=location, block_type=block_type)
