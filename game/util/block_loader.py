@@ -12,5 +12,9 @@ def load_blocks(config_file: str) -> dict[str, BlockType]:
         sys.exit(1)
         
     return {
-        key: BlockType(name=key, texture=block_config[key]['texture'], break_sound=block_config[key]['break_sound']) for key in block_config.keys()
+        key: BlockType(name=key,
+                       texture=block_config[key]['texture'],
+                       break_sound=block_config[key]['break_sound'] if 'break_sound' in block_config[key] else None,
+                       place_sound=block_config[key]['place_sound'] if 'place_sound' in block_config[key] else None
+                    ) for key in block_config.keys()
     }

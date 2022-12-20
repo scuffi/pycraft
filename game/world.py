@@ -105,8 +105,8 @@ class World:
                 # ...so we can remove the chunk as it's too far away to care about
                 self._remove_chunk(chunk_offset)
                 
-    def place_block(self, location: tuple, texture: str):
-        block = Block(model='cube', parent=scene, texture=texture, position=location)
+    def place_block(self, location: tuple, block_type: BlockType):
+        block = Block(model='cube', parent=scene, position=location, block_type=block_type)
         
         block.collision = True
         
@@ -129,14 +129,17 @@ class World:
         
         self.blocks[(block.x,block.y,block.z)] = block
         
-    def break_block(self, block: Block):
+        if block_type.place_sound:
+            block_type.place_sound.play()
+        
+    def break_block(self, block: Block, by_player: bool = False):
         """
         Attempt to destroy a block from the World.
         
         Args:
           block (Block): The block to be destroyed.
         """
-        block.remove()
+        block.remove(by_player)
         
         if block in self.blocks:
             del self.blocks[block]

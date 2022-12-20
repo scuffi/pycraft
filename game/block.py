@@ -1,20 +1,22 @@
-from ursina import Entity, color, destroy, load_model, Vec2
+from ursina import Entity, color, destroy, load_model, Vec2, Audio
 
 from .config import Settings
+from .game_types import BlockType
 
 class Block(Entity):
     """Block is a block on the screen. This handles the entity itself and more including hover effects.
     """
     
-    def __init__(self, add_to_scene_entities=True, **kwargs):
+    def __init__(self, block_type: BlockType, add_to_scene_entities=True, **kwargs):
         super().__init__(add_to_scene_entities, **kwargs)
         self.collider = 'mesh'
         self.collision = False
         
-        # self.texture_scale*=(Settings.TEXTURE_SIZE * 4)/self.texture.width
-        
-        
         self.hovered_box = None
+        
+        self.block_type = block_type
+        
+        self.texture = block_type.texture
         
     def on_mouse_enter(self):
         """
@@ -30,6 +32,9 @@ class Block(Entity):
         destroy(self.hovered_box)
         self.hovered_box = None
         
-    def remove(self):
+    def remove(self, by_player: bool = False):
+        if by_player:
+            self.block_type.break_sound.play()
         self.on_mouse_exit()
         destroy(self)
+        

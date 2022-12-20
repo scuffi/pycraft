@@ -56,7 +56,7 @@ class Chunk:
             
             # block.model.generate()
             
-            block = Block(model='cube', parent=scene, texture=default_block.texture)
+            block = Block(model='cube', parent=scene, block_type=default_block)
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))

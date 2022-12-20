@@ -1,3 +1,4 @@
+import sys
 from multiprocess import Process
 
 if __name__ == "__main__":
@@ -28,6 +29,10 @@ if __name__ == "__main__":
     def input(key):
         # Check if the player is interacting with the world
         player.is_interacting(key, world)
+        
+        # Quit the game if escape is pressed
+        if key == "escape":
+            sys.exit(0)
                 
     # Register all our listeners so the code will properly execute on events
     register_listeners(player, world)
