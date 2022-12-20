@@ -5,14 +5,16 @@ if __name__ == "__main__":
     # Need to import everything here as Multiprocessing does NOT like ursina engine
     # ! As of 19/12/2022 -> Multiprocessing is not used because Ursina is ALLERGIC, leave this here as will continue to try and fix
     from ursina import Ursina, raycast, camera, mouse
-    from game import register_listeners, World, Player, WorldSettings, NoiseSettings
+    from game import register_listeners, World, Player, WorldSettings, NoiseSettings, load_blocks, Settings
     
     # Our game object
     app = Ursina()
     
+    block_registry = load_blocks(Settings.BLOCK_CONFIG)
+    
     # Instantiate a world and a player
-    world = World(seed=NoiseSettings.SEED)
-    player = Player()
+    world = World(seed=NoiseSettings.SEED, block_registry=block_registry)
+    player = Player(list(block_registry.values()))
     
     # Perform some pre-generation
     world.pregen_world(WorldSettings.RENDER_DISTANCE)

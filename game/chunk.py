@@ -7,6 +7,7 @@ import random
 from .noise import Noise
 from .block import Block
 from .config import DebugSettings
+from .game_types import BlockType
 
 class Chunk:
     """Chunk relates to the generation of the terrain and nothing else. We have a block store in here, but that is only for deleting a chunk."""
@@ -34,7 +35,7 @@ class Chunk:
         
         self.color = color.rgba(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
         
-    def generate_blocks(self):
+    def generate_blocks(self, default_block: BlockType):
         """
         It creates a block for each coordinate in the chunk, and adds it to the world.
         """
@@ -55,9 +56,7 @@ class Chunk:
             
             # block.model.generate()
             
-            
-            
-            block = Block(model='cube', parent=scene, texture='grass')
+            block = Block(model='cube', parent=scene, texture=default_block.texture)
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))

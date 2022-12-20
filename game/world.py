@@ -1,16 +1,19 @@
-from ursina import Entity, destroy, scene
+import sys
+
+from ursina import Entity, destroy, scene, Mesh, Vec3, Vec2, load_model
 
 from .noise import Noise
 from .config import WorldSettings, NoiseSettings
 from .chunk import Chunk
 from .block import Block
 from .util import BoundingBox
+from .game_types import BlockType
 
 class World:
     """World relates to the world itself, holding all functionality to manipulate the terrain.
     """
     
-    def __init__(self, seed: int) -> None:
+    def __init__(self, seed: int, block_registry: dict[str, BlockType]) -> None:
         """
         Create a new world.
         
@@ -23,6 +26,8 @@ class World:
         # self.chunks: list[Chunk] = []
         
         self.blocks: list[Entity] = {}
+        
+        self.block_registry = block_registry
         
     def pregen_world(self, radius: int):
         """
@@ -46,8 +51,13 @@ class World:
           offset (tuple[int, int]): tuple[int, int]
         """
         chunk = Chunk(noise=self.noise, chunk_size=WorldSettings.CHUNK_SIZE, chunk_offset=offset, world=self)
+        
+        # Check if the default block exists in the registry
+        if WorldSettings.DEFAULT_BLOCK not in self.block_registry:
+            print("Default block was not found in configuration, please amend.")
+            sys.exit(1)
 
-        chunk.generate_blocks()
+        chunk.generate_blocks(self.block_registry[WorldSettings.DEFAULT_BLOCK])
         
         self.chunks[offset] = chunk
         
@@ -97,7 +107,25 @@ class World:
                 
     def place_block(self, location: tuple, texture: str):
         block = Block(model='cube', parent=scene, texture=texture, position=location)
+        
         block.collision = True
+        
+        # TODO: Possibly a future iteration using a custom block object to extend the vertices for complex textures?
+        # block = Block(
+        #     model=Mesh(),
+        #     parent=scene,
+        #     position=location,
+        #     texture=texture
+        # )
+        
+        # block_model = load_model('block.obj', use_deepcopy=True)
+        
+        # block.model.vertices.extend([Vec3(block.x,block.y,block.z) + v for v in 
+        #                     block_model.vertices])
+        
+        # block.model.uvs.extend([Vec2(0,0) + u for u in block_model.uvs])
+        
+        # block.model.generate()
         
         self.blocks[(block.x,block.y,block.z)] = block
         

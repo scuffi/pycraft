@@ -8,6 +8,8 @@ class WorldSettings:
     """WorldSettings relate to settings about the World and generation"""
     CHUNK_SIZE = settings_file['chunk-size']
     RENDER_DISTANCE = settings_file['render-distance']
+    DEFAULT_BLOCK = settings_file['default-block']
+    
     
 class NoiseSettings:
     SEED = settings_file['seed']
@@ -19,6 +21,7 @@ class Settings:
     """Settings relate to general-purpose features that don't need a specific category"""
     REACH = settings_file['reach']
     HOVER_COLOUR = settings_file['hover-colour']
+    BLOCK_CONFIG = settings_file['block-config']
     
 class DebugSettings:
     """DebugSettings relate to debug settings that alter gameplay, but allow for visualisations of processes"""

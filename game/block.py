@@ -1,4 +1,4 @@
-from ursina import Entity, color, destroy
+from ursina import Entity, color, destroy, load_model, Vec2
 
 from .config import Settings
 
@@ -8,8 +8,11 @@ class Block(Entity):
     
     def __init__(self, add_to_scene_entities=True, **kwargs):
         super().__init__(add_to_scene_entities, **kwargs)
-        self.collider = 'box'
+        self.collider = 'mesh'
         self.collision = False
+        
+        # self.texture_scale*=(Settings.TEXTURE_SIZE * 4)/self.texture.width
+        
         
         self.hovered_box = None
         

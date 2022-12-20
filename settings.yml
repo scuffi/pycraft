@@ -1,21 +1,22 @@
-# World settings
+# * World settings
 chunk-size: 8
 render-distance: 3
 seed: 1337
+default-block: Dirt
 
-# Noise settings
+# * Noise settings
 amplitude: 5
 frequency: 24
 octaves: 2
 
-# General
+# * General
 reach: 6
+block-config: blocks.yml
 
 # Colour of the block when hovered, where the list is RGBA ordered
 hover-colour: [3, 23, 252, 100]
 
-# Debug settings
-
+# * Debug settings
 # ? Visualise chunk borders
 chunk-colours: True
 

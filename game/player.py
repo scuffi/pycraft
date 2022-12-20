@@ -1,4 +1,4 @@
-from ursina import color, mouse
+from ursina import color, mouse, Text
 from ursina.prefabs.first_person_controller import FirstPersonController
 from numpy import floor
 
@@ -6,12 +6,14 @@ from .event import EventHandler
 from .util import BoundingBox3D
 from .config import DebugSettings, Settings
 from .world import World
+from .inventory import Inventory
+from .game_types import BlockType
 
 class Player:
     """Player class is the class relating to the player, including data and manipulation functions
     """
     
-    def __init__(self) -> None:
+    def __init__(self, blocks: list[BlockType]) -> None:
         self.controller = FirstPersonController()
         
         self.event = EventHandler()
@@ -20,6 +22,8 @@ class Player:
         self.last_chunk = None
         
         self.interactive_blocks: list = []
+        
+        self.inventory = Inventory(blocks)
         
     @property
     def position(self):
@@ -70,11 +74,13 @@ class Player:
         if key == 'left mouse down':
             hovered_block = mouse.hovered_entity
             if hovered_block:
-                world.place_block(hovered_block.position + mouse.normal, 'grass')
+                world.place_block(hovered_block.position + mouse.normal, self.inventory.current_block.texture)
         elif key == 'right mouse down':
             hovered_block = mouse.hovered_entity
             if hovered_block:
                 world.break_block(hovered_block)
+                
+        self.inventory.is_scrolling(key)
                 
     # ! Private functions
     def _position_changed(self, **kwargs):
