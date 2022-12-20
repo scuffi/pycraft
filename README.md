@@ -45,7 +45,7 @@ The main configuration file is `settings.yml` in the main directory.
 In this file you will find multiple different settings that correspond to the rendering, generation and configuration of the world, all these settings are documented in that file.
 
 
-The configuration file for custom blocks is `blocks.yml` in the main directory.
+The default configuration file for custom blocks is `blocks.yml` in the main directory.
 To configure custom blocks, you will need a texture. Ensure the texture is a square file, as it will wrap the block.
 
 Blocks are configured as so:
