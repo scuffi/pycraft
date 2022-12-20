@@ -12,7 +12,7 @@ class Inventory:
         self.current_index = 0
         self.all_blocks = all_blocks
         
-        self.overlay_text = Text(text=self.all_blocks[self.current_index].name, scale=2, x=-.05, y=-.3)
+        self.overlay_text = Text(text=self._get_overlay_text(), scale=2, x=-.85, y=.5)
         
     def is_scrolling(self, key):
         if key == 'scroll up':
@@ -20,7 +20,10 @@ class Inventory:
         elif key == 'scroll down':
             self.current_index = self.current_index - 1 if self.current_index > 0 else len(self.all_blocks)-1
             
-        self.overlay_text.text = self.all_blocks[self.current_index].name
+        self.overlay_text.text = self._get_overlay_text()
+        
+    def _get_overlay_text(self) -> str:
+        return f"Holding: {self.all_blocks[self.current_index].name}"
         
     @property
     def current_block(self) -> BlockType:
