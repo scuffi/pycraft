@@ -4,9 +4,9 @@ from multiprocessing import Process
 
 from dataclasses import dataclass
 
-# A decorator that creates a class with the given attributes.
 @dataclass
 class Callback:
+    """Callback holds needed information for an Event callback to execute"""
     function: types.FunctionType
     asynchronous: bool
     
@@ -17,7 +17,7 @@ class Callback:
         Passes any arguments given to the function
         """
         if self.asynchronous:
-            print("Operating in new thread")
+            # TODO: Ursina fails with this, grr
             p = Process(target=self.function, kwargs=kwargs)
             p.start()
         else:

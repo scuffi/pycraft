@@ -40,7 +40,7 @@ class Noise:
     def octaves(self):
         return self._octaves
     
-    def get_y(self, x, z):
+    def get_y(self, x, z) -> int:
         """
         Return a noisy y coordinate based off of the x,z plane.
         

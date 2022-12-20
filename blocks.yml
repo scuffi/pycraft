@@ -1,0 +1,7 @@
+Dirt:
+  texture: dirt.png
+  break_sound: dirt.ogg
+
+Stone:
+  texture: stone.png
+  break_sound: stone.ogg
