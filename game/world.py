@@ -2,6 +2,8 @@ import sys
 
 from ursina import Entity, destroy, scene, Mesh, Vec3, Vec2, load_model
 
+from numpy import floor
+
 from .noise import Noise
 from .config import WorldSettings, NoiseSettings
 from .chunk import Chunk
@@ -73,10 +75,7 @@ class World:
         Args:
           offset (tuple[int, int]): The offset of the chunk to remove.
         """
-        if offset in self.enabled_chunks:
-            # for block in self.chunks[offset].blocks:
-            #     self.break_block(block)
-                
+        if offset in self.enabled_chunks:                
             chunk_object = self.enabled_chunks[offset]
             chunk_object._derender_chunk()
             
@@ -117,6 +116,8 @@ class World:
                 self._derender_chunk(chunk_offset)
                 
     def place_block(self, location: tuple, block_type: BlockType):
+        chunk = self._get_interacted_chunk(location)
+        
         block = Block(model='cube', parent=scene, position=location, block_type=block_type)
         
         block.collision = True
@@ -138,7 +139,9 @@ class World:
         
         # block.model.generate()
         
+        # Add the block to the world registry, and the chunk registry
         self.blocks[(block.x,block.y,block.z)] = block
+        chunk.blocks[(block.x,block.y,block.z)] = block
         
         if block_type.place_sound:
             block_type.place_sound.play()
@@ -150,7 +153,19 @@ class World:
         Args:
           block (Block): The block to be destroyed.
         """
+        chunk = self._get_interacted_chunk(block.position)
+        
         block.remove(by_player)
         
         if block in self.blocks:
             del self.blocks[block]
+            
+        if block in chunk.blocks:
+            del chunk.blocks[block]
+            
+    #! Private functions
+    def _get_interacted_chunk(self, location: tuple) -> Chunk:
+        x,z = floor(location[0] / 8), floor(location[2] / 8)
+        chunk = self.enabled_chunks[(x,z)]
+        
+        return chunk

@@ -26,7 +26,7 @@ class Chunk:
         
         self.block = load_model('block.obj', use_deepcopy=True)
         
-        self.blocks: list[Entity] = []
+        self.blocks: dict[tuple, Entity] = {}
         self.offset_x = (chunk_offset[0] * chunk_size)
         self.offset_z = (chunk_offset[1] * chunk_size)
         
@@ -66,12 +66,12 @@ class Chunk:
             if DebugSettings.CHUNK_COLOURS:
                 block.color = self.color
             
-            self.blocks.append(block)
+            self.blocks[(block.x, block.y, block.z)] = block
             
     def _render_chunk(self):
-        for block in self.blocks:
+        for block in list(self.blocks.values()):
             block.enable()
         
     def _derender_chunk(self):
-        for block in self.blocks:
+        for block in list(self.blocks.values()):
             block.disable()
