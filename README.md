@@ -94,7 +94,7 @@ Allow for blocks to be loaded from an external file, which documents block textu
 Allow the user to place all of the configured blocks as they please
 
 
-## Optimizations
+## Optimisations
 
 - Non-collision map
 > The map itself has no collisions for all visible entities, this increases performance as the program doesn't have to run physics simulations on anything except a small bounding box around the player.
@@ -106,6 +106,8 @@ Allow the user to place all of the configured blocks as they please
 > To ensure that there are never too many entities on the screen, we remove any chunks from our render that are too far away. They still exist, but we take the strain off the engine by removing them from the scene.
 - Store old chunks when not rendered
 > Due to the fact we continue to store the unrendered chunks, when walking into new, but pregenerated terrain, we do not feel a large jump, as most processing has already been done.
+
+Ontop of these optimisations, we also don't reperform any calculations on blocks or chunks that already exist. This is what the registry is for, as we can assure that if it exists in the registry, the calculations have already been completed, so we don't have to regenerate it, we assume the calculations have already been completed.
 
 
 ## UML Diagrams

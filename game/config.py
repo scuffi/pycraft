@@ -12,6 +12,7 @@ class WorldSettings:
     
     
 class NoiseSettings:
+    """NoiseSettings relate to Noise specific configuration, as the world is based off of noise, editing these will change the world generation"""
     SEED = settings_file['seed']
     AMPLITUDE = settings_file['amplitude']
     FREQUENCY = settings_file['frequency']

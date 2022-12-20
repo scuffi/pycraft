@@ -37,41 +37,39 @@ class Chunk:
         
     def generate_chunk(self, default_block: BlockType):
         """
-        It creates a block for each coordinate in the chunk, and adds it to the world.
+        It creates a block for each coordinate in the chunk, and adds it to the world
+        
+        Args:
+          default_block (BlockType): The type of block to generate by default.
         """
         for i in range(self.chunk_size*self.chunk_size):
-            # block = Block(
-            #     model=Mesh(),
-            #     color=self.color,
-            #     parent=scene,
-            #     player=self.player
-            # )
             
-            # x = floor((i/self.chunk_size) + self.offset_x)
-            # z = floor((i%self.chunk_size) + self.offset_z)
-            # y = self.noise.get_y(x, z)
-            
-            # block.model.vertices.extend([Vec3(x,y,z) + v for v in 
-            #                     self.block.vertices])
-            
-            # block.model.generate()
-            
+            # Create the block and set its position
             block = Block(model='cube', parent=scene, block_type=default_block)
             block.x = floor((i/self.chunk_size) + self.offset_x)
             block.z = floor((i%self.chunk_size) + self.offset_z)
             block.y = floor(self.noise.get_y(block.x, block.z))
             
+            # Add the block to the worlds block registry
             self.world.blocks[(block.x,block.y,block.z)] = block
             
+            # If the debug setting is enabled, add the colour to this block
             if DebugSettings.CHUNK_COLOURS:
                 block.color = self.color
             
+            # Add the block to the chunks block registry
             self.blocks[(block.x, block.y, block.z)] = block
             
     def _render_chunk(self):
+        """
+        Enables all the blocks in the chunk
+        """
         for block in list(self.blocks.values()):
             block.enable()
         
     def _derender_chunk(self):
+        """
+        Disables all the blocks in the chunk
+        """
         for block in list(self.blocks.values()):
             block.disable()

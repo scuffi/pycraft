@@ -33,6 +33,12 @@ class Block(Entity):
         self.hovered_box = None
         
     def remove(self, by_player: bool = False):
+        """
+        Remove the block from the game
+        
+        Args:
+          by_player (bool): Whether the block was broken by the player or not. Defaults to False
+        """
         if by_player:
             self.block_type.break_sound.play()
         self.on_mouse_exit()

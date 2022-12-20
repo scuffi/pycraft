@@ -18,7 +18,7 @@ hover-colour: [3, 23, 252, 100]
 
 # * Debug settings
 # ? Visualise chunk borders
-chunk-colours: True
+chunk-colours: False
 
 # ? Visualise the derendered blocks around the player
 colour-derendered: False

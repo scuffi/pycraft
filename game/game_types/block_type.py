@@ -10,6 +10,15 @@ class BlockType:
     place_sound: Audio | None
     
     def __init__(self, name: str, texture: str, break_sound: Audio | None, place_sound: Audio | None) -> None:
+        """
+        It creates a new BlockType object
+        
+        Args:
+          name (str): The name of the block.
+          texture (str): The texture of the block.
+          break_sound (Audio | None): The sound that plays when the block is broken.
+          place_sound (Audio | None): The sound that plays when the block is placed.
+        """
         self.name = name
         self.texture = texture
         
