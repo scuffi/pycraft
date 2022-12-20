@@ -24,19 +24,19 @@ _Expected supported versions are 3.6+ (don't quote me)_
 
 Clone the repository:
 ```bash
-  git clone https://github.com/scuffi/pycraft.git
+git clone https://github.com/scuffi/pycraft.git
 ```
 Enter the repository directory:
 ```bash
-  cd pycraft
+cd pycraft
 ```
 Install dependencies (Virtual Environment recommended):
 ```bash
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 Finally, run the game:
 ```bash
-  python main.py
+python main.py
 ```
     
 ## Configuration
