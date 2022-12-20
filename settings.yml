@@ -1,7 +1,14 @@
 # * World settings
+# The size of chunks, recommended to leave as performance decreases the larger these are
 chunk-size: 8
+
+# How many chunks should be generated around a player
 render-distance: 3
+
+# Seed for the world generation
 seed: 1337
+
+# The default block to generate -> this should be in line with the block configuration
 default-block: Dirt
 
 # * Noise settings
@@ -10,7 +17,10 @@ frequency: 24
 octaves: 2
 
 # * General
+# How far around a player should they be able to interact with
 reach: 6
+
+# The block configuration file, ensure this exists or else program will immediately halt
 block-config: blocks.yml
 
 # Colour of the block when hovered, where the list is RGBA ordered
